@@ -1,6 +1,6 @@
 # Option
 
-**TODO: Add description**
+Elixir library with helper functions dealing with some and none tuple sets.
 
 ## Installation
 
