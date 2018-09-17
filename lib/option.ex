@@ -1,11 +1,11 @@
 defmodule Option do
-
   @moduledoc """
   Library containing helper functions for the option monad.
   """
 
-  @type t :: {:some, term}
-    | :none
+  @type t ::
+          {:some, term}
+          | :none
 
   @doc """
   Elevates a value to an Option type.
@@ -82,6 +82,7 @@ defmodule Option do
     case :erlang.fun_info(fun, :arity) do
       {_, 0} ->
         :none
+
       _ ->
         {:some, curry(fun, value)}
     end
@@ -149,7 +150,7 @@ defmodule Option do
       5
 
   """
-  @spec expect!(t, String.t) :: term
+  @spec expect!(t, String.t()) :: term
   def expect!({:some, value}, _), do: value
 
   def expect!(_, message), do: throw(message)
@@ -243,14 +244,16 @@ defmodule Option do
       :none
 
   """
-  @spec flatten_enum(Enum.t) :: t
+  @spec flatten_enum(Enum.t()) :: t
   def flatten_enum(%{} = enum) do
     Enum.reduce(enum, {:some, %{}}, fn
       {key, {:some, value}}, {:some, result} ->
         Map.put(result, key, value)
         |> return
+
       _, :none ->
         :none
+
       {_, :none}, _ ->
         :none
     end)
@@ -260,8 +263,10 @@ defmodule Option do
     Enum.reduce(enum, {:some, []}, fn
       {:some, value}, {:some, result} ->
         {:some, [value | result]}
+
       _, :none ->
         :none
+
       :none, _ ->
         :none
     end)
@@ -281,11 +286,11 @@ defmodule Option do
   @spec apply_curry(fun, [term]) :: term
   defp apply_curry(fun, args) do
     {_, arity} = :erlang.fun_info(fun, :arity)
+
     if arity == length(args) do
       apply(fun, Enum.reverse(args))
     else
       fn arg -> apply_curry(fun, [arg | args]) end
     end
   end
-
 end
