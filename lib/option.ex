@@ -275,10 +275,53 @@ defmodule Option do
 
   def flatten_enum(_), do: :none
 
-  @spec to_result(t) :: {:ok, term} | {:error, term}
+  @doc """
+  Converts an option to a result type.
+
+  ## Examples
+
+      iex> Option.to_result({:some, 5})
+      {:ok, 5}
+      ...> Option.to_result(:none)
+      {:error, "Option.to_result: The option was empty"}
+
+  """
+  @spec to_result(t) :: {:ok, term} | {:error, String.t}
   def to_result({:some, value}), do: {:ok, value}
 
   def to_result(:none), do: {:error, "Option.to_result: The option was empty"}
+
+  @doc """
+  Converts an option to a result type, specifying the error reason in case the option is empty.
+
+  ## Examples
+
+      iex> Option.to_result({:some, 5}, :unexpected_empty_value)
+      {:ok, 5}
+      ...> Option.to_result(:none, :unexpected_empty_value)
+      {:error, :unexpected_empty_value}
+
+  """
+  @spec to_result(t, term) :: {:ok, term} | {:error, term}
+  def to_result({:some, value}, _), do: {:ok, value}
+
+  def to_result(:none, reason), do: {:error, reason}
+
+  @doc """
+  Converts an option to a bool, ignoring the inner value.
+
+  ## Examples
+
+      iex> Option.to_bool({:some, 5})
+      true
+      ...> Option.to_bool(:none)
+      false
+
+  """
+  @spec to_bool(t) :: boolean
+  def to_bool({:some, _}), do: true
+
+  def to_bool(:none), do: false
 
   @spec curry(fun, term) :: term
   defp curry(fun, arg1), do: apply_curry(fun, [arg1])
