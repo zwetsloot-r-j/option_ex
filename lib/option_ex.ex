@@ -236,7 +236,7 @@ defmodule OptionEx do
       4
 
   """
-  @spec or_else_with(t, (-> term)) :: term
+  @spec or_else_with(t, (() -> term)) :: term
   def or_else_with({:some, value}, _), do: value
 
   def or_else_with(:none, fun), do: fun.()
@@ -332,7 +332,7 @@ defmodule OptionEx do
       {:error, "OptionEx.to_result: The option was empty"}
 
   """
-  @spec to_result(t) :: {:ok, term} | {:error, String.t}
+  @spec to_result(t) :: {:ok, term} | {:error, String.t()}
   def to_result({:some, value}), do: {:ok, value}
 
   def to_result(:none), do: {:error, "OptionEx.to_result: The option was empty"}

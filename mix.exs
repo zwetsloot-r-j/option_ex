@@ -7,7 +7,8 @@ defmodule OptionEx.MixProject do
     [
       app: :option_ex,
       version: "0.1.0",
-      description: "Module to make working with potential nil values safer and more convenient by using {:some, value} or :none instead",
+      description:
+        "Module to make working with potential nil values safer and more convenient by using {:some, value} or :none instead",
       elixir: "~> 1.7",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
