@@ -92,6 +92,14 @@ defmodule OptionEx do
   def map(:none, _), do: :none
 
   @doc """
+  Partially applies `OptionEx.map/2` with the passed function.
+  """
+  @spec map((term -> term)) :: (t -> t)
+  def map(fun) do
+    fn option -> map(option, fun) end
+  end
+
+  @doc """
   Executes or partially executes the function given as value of the first `t:OptionEx.t/0`,
   and applies it with the value of the second `t:OptionEx.t/0`.
   If the function has an arity greater than 1, the returned `t:OptionEx.t/0` value will be the function partially applied.
@@ -168,6 +176,14 @@ defmodule OptionEx do
   end
 
   def bind(:none, _), do: :none
+
+  @doc """
+  Partially applies `OptionEx.bind/2` with the passed function.
+  """
+  @spec bind((term -> t)) :: (t -> t)
+  def bind(fun) do
+    fn option -> bind(option, fun) end
+  end
 
   @doc """
   Unwraps the `t:OptionEx.t/0` to return its value.
