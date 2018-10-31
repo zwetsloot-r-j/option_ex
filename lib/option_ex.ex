@@ -338,7 +338,36 @@ defmodule OptionEx do
   def flatten_enum(_), do: :none
 
   @doc """
-  Converts an `t:Option.t/0` to a result type.
+  Filters an `t:Enum.t/0` from all :none values.
+
+  ## Examples
+
+      iex> [{:some, 1}, :none, {:some, 3}]
+      ...> |> OptionEx.filter_enum()
+      [{:some, 1}, {:some, 3}]
+
+      iex> %{a: {:some, 1}, b: :none, c: {:some, 3}}
+      ...> |> OptionEx.filter_enum()
+      %{a: {:some, 1}, c: {:some, 3}}
+
+  """
+  @spec filter_enum(Enum.t()) :: Enum.t()
+  def filter_enum(%{} = enum) do
+    Enum.reduce(enum, %{}, fn
+      {key, {:some, _} = option}, result ->
+        Map.put(result, key, option)
+
+      _, result ->
+        result
+    end)
+  end
+
+  def filter_enum(enum) when is_list(enum) do
+    Enum.filter(enum, &to_bool/1)
+  end
+
+  @doc """
+  Converts an `t:OptionEx.t/0` to a result type.
 
   ## Examples
 
@@ -354,7 +383,7 @@ defmodule OptionEx do
   def to_result(:none), do: {:error, "OptionEx.to_result: The option was empty"}
 
   @doc """
-  Converts an `t:Option.t/0` to a Result type, specifying the error reason in case the `t:Option.t/0` is empty.
+  Converts an `t:OptionEx.t/0` to a Result type, specifying the error reason in case the `t:OptionEx.t/0` is empty.
   The Result type consists of an {:ok, term} tuple, or an {:error, term} tuple.
 
   ## Examples
@@ -371,7 +400,7 @@ defmodule OptionEx do
   def to_result(:none, reason), do: {:error, reason}
 
   @doc """
-  Converts an `t:Option.t/0` to a bool, ignoring the inner value.
+  Converts an `t:OptionEx.t/0` to a bool, ignoring the inner value.
 
   ## Examples
 
