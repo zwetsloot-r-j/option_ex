@@ -63,12 +63,10 @@ By replacing optional nil values with an `t:OptionEx.t/0`, it is no longer neede
     %{id: 0}
 ```
 
-"""
-
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
+The package can be installed
 by adding `option_ex` to your list of dependencies in `mix.exs`:
 
 ```elixir

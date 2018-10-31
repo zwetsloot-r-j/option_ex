@@ -41,7 +41,7 @@ defmodule OptionEx.MixProject do
 
   defp package do
     [
-      lincenses: ["MIT"],
+      licenses: ["MIT"],
       maintainers: ["Robert Jan Zwetsloot"],
       links: %{github: @github}
     ]
