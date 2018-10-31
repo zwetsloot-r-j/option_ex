@@ -1,4 +1,4 @@
-defmodule OptionTest do
+defmodule OptionExTest do
   use ExUnit.Case
-  doctest Option
+  doctest OptionEx
 end
