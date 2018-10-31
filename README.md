@@ -1,4 +1,4 @@
-# Option
+# OptionEx
 
 OptionEx is a module for handling functions returning a `t:OptionEx.t/0`.
 This module is inspired by the f# Option module, and [Railway Oriented Programming](https://fsharpforfunandprofit.com/rop/) as explained by Scott Wlaschin. This module is intended to make working with `nil` values more safe and convenient. For splitting tracks based on ok or error return values see [ResultEx](https://hexdocs.pm/result_ex/ResultEx.html#content).
