@@ -6,7 +6,7 @@ defmodule OptionEx.MixProject do
   def project do
     [
       app: :option_ex,
-      version: "0.1.0",
+      version: "0.2.0",
       description:
         "Module to make working with potential nil values safer and more convenient by using {:some, value} or :none instead",
       elixir: "~> 1.7",

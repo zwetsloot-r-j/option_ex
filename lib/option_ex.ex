@@ -48,6 +48,11 @@ defmodule OptionEx do
 
   """
 
+  @typedoc """
+  Data structure representing an Option.
+  When the Option is containing a value, the value is wrapped in a tuple with the atom :some as its first element.
+  When the Option is empty, it is represented as the single atom :none.
+  """
   @type t ::
           {:some, term}
           | :none
@@ -258,6 +263,29 @@ defmodule OptionEx do
   def or_else_with(:none, fun), do: fun.()
 
   @doc """
+  Attempts to generate a different option wrapped value by executing the function passed, if the `t:OptionEx.t/0` is empty.
+  If the original `t:OptionEx.t/0` contains a value, the `t:OptionEx.t/0` is returned without unwrapping the value.
+
+  The passed function is expected to return a `t:OptionEx.t/0`.
+
+  ## Examples
+
+      iex> attempt_to_get_data = fn -> :none end
+      ...> successfully_get_data = fn -> {:some, :data} end
+      ...>
+      ...> attempt_to_get_data.()
+      ...> |> OptionEx.or_try(attempt_to_get_data)
+      ...> |> OptionEx.or_try(successfully_get_data)
+      ...> |> OptionEx.or_try(attempt_to_get_data)
+      {:some, :data}
+
+  """
+  @spec or_try(t, (() -> t)) :: t
+  def or_try({:some, value}, _), do: {:some, value}
+
+  def or_try(:none, fun), do: fun.()
+
+  @doc """
   Flatten nested `t:OptionEx.t/0`s into one `t:OptionEx.t/0`.
 
   ## Examples
@@ -414,6 +442,25 @@ defmodule OptionEx do
   def to_bool({:some, _}), do: true
 
   def to_bool(:none), do: false
+
+  @doc """
+  Creates an `t:OptionEx.t/0` from a boolean, and the specified value.
+  If the boolean is true, an option with the value is returned.
+  If the boolean is false, :none is returned.
+
+  ## Examples
+
+      iex> OptionEx.from_bool(true, :unit)
+      {:some, :unit}
+
+      iex> OptionEx.from_bool(false, :unit)
+      :none
+
+  """
+  @spec from_bool(boolean, term) :: t
+  def from_bool(true, value), do: {:some, value}
+
+  def from_bool(false, _), do: :none
 
   @spec curry(fun, term) :: term
   defp curry(fun, arg1), do: apply_curry(fun, [arg1])
